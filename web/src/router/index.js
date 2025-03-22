@@ -4,6 +4,8 @@ import RecordIndexView from '../views/record/RecordIndedxView.vue'
 import RankListIndexView from '../views/ranklist/RankListIndexView.vue'
 import UserBotIndexView from '../views/user/bots/UserBotIndexView.vue'
 import NotFoundView from '../views/error/NotFoundView.vue'
+import UserAccountLoginView from '@/views/user/account/UserAccountLoginView.vue'
+import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView.vue'
 
 const routes = [
   {
@@ -35,6 +37,16 @@ const routes = [
     path: "/404/",
     name: "404",
     component: NotFoundView,
+  },
+  {
+    path: "/user/account/login/",
+    name: "user_account_login",
+    component: UserAccountLoginView,
+  },
+  {
+    path: "/user/account/register/",
+    name: "user_account_register",
+    component: UserAccountRegisterView,
   },
   {
     path: "/:catAll(.*)",
