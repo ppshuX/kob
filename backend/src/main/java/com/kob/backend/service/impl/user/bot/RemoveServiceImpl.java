@@ -28,7 +28,6 @@ public class RemoveServiceImpl implements RemoveService {
 
         int bot_id = Integer.parseInt(data.get("bot_id"));
         Bot bot = botMapper.selectById(bot_id);
-
         Map<String, String> map = new HashMap<>();
 
         if (bot == null) {
@@ -44,7 +43,6 @@ public class RemoveServiceImpl implements RemoveService {
         botMapper.deleteById(bot_id);
 
         map.put("error_message", "success");
-
         return map;
     }
 }
