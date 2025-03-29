@@ -1,15 +1,15 @@
 <template>
-   <PlayGround v-if="$store.state.pk.status === 'playing'" />
-   <MatchGround v-if="$store.state.pk.status === 'matching'" />
-   <ResultBoard v-if="$store.state.pk.loser != 'none'"/>
+    <PlayGround v-if="$store.state.pk.status === 'playing'" />
+    <MatchGround v-if="$store.state.pk.status === 'matching'" />
+    <ResultBoard v-if="$store.state.pk.loser != 'none'" />
 </template>
 
 <script>
 import PlayGround from '../../components/PlayGround.vue'
-import MatchGround from '@/components/MatchGround.vue';
+import MatchGround from '../../components/MatchGround.vue'
 import ResultBoard from '../../components/ResultBoard.vue'
-import { onMounted, onUnmounted } from 'vue';
-import { useStore } from 'vuex';
+import { onMounted, onUnmounted } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
     components: {
@@ -21,10 +21,12 @@ export default {
         const store = useStore();
         const socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}/`;
 
+        store.commit("updateLoser", "none");
+
         let socket = null;
         onMounted(() => {
             store.commit("updateOpponent", {
-                username: "未知对手",
+                username: "我的对手",
                 photo: "https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png",
             })
             socket = new WebSocket(socketUrl);
@@ -36,15 +38,15 @@ export default {
 
             socket.onmessage = msg => {
                 const data = JSON.parse(msg.data);
-                if (data.event === "start-matching") {  //matched successfully
+                if (data.event === "start-matching") {  // 匹配成功
                     store.commit("updateOpponent", {
                         username: data.opponent_username,
                         photo: data.opponent_photo,
                     });
                     setTimeout(() => {
                         store.commit("updateStatus", "playing");
-                    }, 1000);
-                    store.commit("updateGamemap", data.game);
+                    }, 200);
+                    store.commit("updateGame", data.game);
                 } else if (data.event === "move") {
                     console.log(data);
                     const game = store.state.pk.gameObject;
@@ -80,5 +82,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

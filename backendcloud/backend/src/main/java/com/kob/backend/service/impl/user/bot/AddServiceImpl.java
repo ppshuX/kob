@@ -1,7 +1,6 @@
 package com.kob.backend.service.impl.user.bot;
 
 import com.kob.backend.mapper.BotMapper;
-import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.Bot;
 import com.kob.backend.pojo.User;
 import com.kob.backend.service.impl.utils.UserDetailsImpl;
@@ -9,7 +8,6 @@ import com.kob.backend.service.user.bot.AddService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,9 +22,9 @@ public class AddServiceImpl implements AddService {
 
     @Override
     public Map<String, String> add(Map<String, String> data) {
-        UsernamePasswordAuthenticationToken authentication =
+        UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl loginUser = (UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
 
         String title = data.get("title");
@@ -35,7 +33,7 @@ public class AddServiceImpl implements AddService {
 
         Map<String, String> map = new HashMap<>();
 
-        if (title == null || title.isEmpty()) {
+        if (title == null || title.length() == 0) {
             map.put("error_message", "标题不能为空");
             return map;
         }
@@ -45,22 +43,22 @@ public class AddServiceImpl implements AddService {
             return map;
         }
 
-        if (description == null || description.isEmpty()) {
-            description = "这个用户很懒，什么也没写";
+        if (description == null || description.length() == 0) {
+            description = "这个用户很懒，什么也没留下~";
         }
 
         if (description.length() > 300) {
-            map.put("error_message", "Bot的描述不能大于300");
+            map.put("error_message", "Bot描述的长度不能大于300");
             return map;
         }
 
-        if (content == null || content.isEmpty()) {
+        if (content == null || content.length() == 0) {
             map.put("error_message", "代码不能为空");
             return map;
         }
 
         if (content.length() > 10000) {
-            map.put("error_message", "代码长度不能大于10000");
+            map.put("error_message", "代码长度不能超过10000");
             return map;
         }
 

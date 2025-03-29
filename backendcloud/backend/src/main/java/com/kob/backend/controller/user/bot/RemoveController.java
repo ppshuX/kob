@@ -17,5 +17,4 @@ public class RemoveController {
     public Map<String, String> remove(@RequestParam Map<String, String> data) {
         return removeService.remove(data);
     }
-
 }

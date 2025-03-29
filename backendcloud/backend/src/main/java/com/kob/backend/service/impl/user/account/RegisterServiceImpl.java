@@ -3,14 +3,11 @@ package com.kob.backend.service.impl.user.account;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kob.backend.mapper.UserMapper;
 import com.kob.backend.pojo.User;
-import com.kob.backend.service.user.account.InfoService;
 import com.kob.backend.service.user.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,18 +27,18 @@ public class RegisterServiceImpl implements RegisterService {
             map.put("error_message", "用户名不能为空");
             return map;
         }
-        if (password == null) {
+        if (password == null || confirmedPassword == null) {
             map.put("error_message", "密码不能为空");
             return map;
         }
 
         username = username.trim();
-        if (username.isEmpty()) {
+        if (username.length() == 0) {
             map.put("error_message", "用户名不能为空");
             return map;
         }
 
-        if (password.isEmpty() || confirmedPassword.isEmpty()) {
+        if (password.length() == 0 || confirmedPassword.length() == 0) {
             map.put("error_message", "密码不能为空");
             return map;
         }
@@ -70,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://img1.baidu.com/it/u=2706076612,1764697282&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667";
+        String photo = "https://cdn.acwing.com/media/user/profile/photo/1_lg_844c66b332.jpg";
         User user = new User(null, username, encodedPassword, photo, 1500);
         userMapper.insert(user);
 

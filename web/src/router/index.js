@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PkIndexView from '../views/pk/PkIndexView.vue'
-import RecordIndexView from '../views/record/RecordIndexView.vue'
-import RankListIndexView from '../views/ranklist/RankListIndexView.vue'
-import UserBotIndexView from '../views/user/bots/UserBotIndexView.vue'
-import NotFoundView from '../views/error/NotFoundView.vue'
-import UserAccountLoginView from '@/views/user/account/UserAccountLoginView.vue'
-import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView.vue'
-import store from '@/store'
-
+import PkIndexView from '../views/pk/PkIndexView'
+import RecordIndexView from '../views/record/RecordIndexView'
+import RanklistIndexView from '../views/ranklist/RanklistIndexView'
+import UserBotIndexView from '../views/user/bot/UserBotIndexView'
+import NotFound from '../views/error/NotFound'
+import UserAccountLoginView from '../views/user/account/UserAccountLoginView'
+import UserAccountRegisterView from '../views/user/account/UserAccountRegisterView'
+import store from '../store/index'
 
 const routes = [
   {
@@ -37,9 +36,9 @@ const routes = [
   {
     path: "/ranklist/",
     name: "ranklist_index",
-    component: RankListIndexView,
+    component: RanklistIndexView,
     meta: {
-      requestAuth: false,
+      requestAuth: true,
     }
   },
   {
@@ -48,14 +47,6 @@ const routes = [
     component: UserBotIndexView,
     meta: {
       requestAuth: true,
-    }
-  },
-  {
-    path: "/404/",
-    name: "404",
-    component: NotFoundView,
-    meta: {
-      requestAuth: false,
     }
   },
   {
@@ -75,8 +66,16 @@ const routes = [
     }
   },
   {
-    path: "/:catAll(.*)",
-    redirect: "/404/",
+    path: "/404/",
+    name: "404",
+    component: NotFound,
+    meta: {
+      requestAuth: false,
+    }
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/404/"
   }
 ]
 
