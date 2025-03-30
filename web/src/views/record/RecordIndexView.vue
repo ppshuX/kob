@@ -10,15 +10,15 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tbody >
-                <tr v-for="record in records" :key="record.id">
+            <tbody>
+                <tr v-for="record in records" :key="record.record.id">
                     <td>
-                        <img :src="record.a_photo" alt="a_photo" class="record-user-photo">
+                        <img :src="record.a_photo" alt="" class="record-user-photo">
                         &nbsp;
                         <span class="record-user-username">{{ record.a_username }}</span>
                     </td>
                     <td>
-                        <img :src="record.b_photo" alt="b_photo" class="record-user-photo">
+                        <img :src="record.b_photo" alt="" class="record-user-photo">
                         &nbsp;
                         <span class="record-user-username">{{ record.b_username }}</span>
                     </td>
@@ -32,19 +32,17 @@
         </table>
         <nav aria-label="...">
         <ul class="pagination" style="display: flex; justify-content: center;">
-            <li class="page-item"  @click="click_page(-2)">
+            <li class="page-item" @click="click_page(-2)">
                 <a class="page-link" href="#">前一页</a>
             </li>
             <li :class="'page-item ' + page.is_active" v-for="page in pages" :key="page.number" @click="click_page(page.number)">
-                <a class="page-link" href="#">
-                    {{ page.number }}
-                </a>
+                <a class="page-link" href="#">{{ page.number }}</a>
             </li>
             <li class="page-item" @click="click_page(-1)">
                 <a class="page-link" href="#">后一页</a>
             </li>
         </ul>
-</nav>
+        </nav>
     </ContentField>
 </template>
 
@@ -52,8 +50,8 @@
 import ContentField from '../../components/ContentField.vue'
 import { useStore } from 'vuex';
 import { ref } from 'vue';
-import $ from 'jquery'
-import router from '@/router/index';
+import $ from 'jquery';
+import router from '../../router/index'
 
 export default {
     components: {
@@ -76,10 +74,10 @@ export default {
             }
         }
 
-        const update_pages = () => {
+        const udpate_pages = () => {
             let max_pages = parseInt(Math.ceil(total_records / 10));
             let new_pages = [];
-            for (let i = current_page - 2 ; i <= current_page + 2 ; i ++) {
+            for (let i = current_page - 2; i <= current_page + 2; i ++ ) {
                 if (i >= 1 && i <= max_pages) {
                     new_pages.push({
                         number: i,
@@ -90,36 +88,35 @@ export default {
             pages.value = new_pages;
         }
 
-        console.log(total_records);
-
         const pull_page = page => {
             current_page = page;
             $.ajax({
-                url: "http://127.0.0.1:3000/record/getlist/",
+                url: "https://app7447.acapp.acwing.com.cn/api/record/getlist/",
                 data: {
                     page,
                 },
-                type: "GET",
+                type: "get",
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
                     records.value = resp.records;
                     total_records = resp.records_count;
-                    update_pages();
+                    udpate_pages();
                 },
                 error(resp) {
                     console.log(resp);
                 }
             })
         }
+
         pull_page(current_page);
 
         const stringTo2D = map => {
             let g = [];
-            for (let i = 0 , k = 0; i < 13; i ++) {
+            for (let i = 0, k = 0; i < 13; i ++ ) {
                 let line = [];
-                for (let j = 0 ; j < 14 ; j ++, k ++) {
+                for (let j = 0; j < 14; j ++, k ++ ) {
                     if (map[k] === '0') line.push(0);
                     else line.push(1);
                 }
@@ -144,8 +141,8 @@ export default {
                     store.commit("updateSteps", {
                         a_steps: record.record.asteps,
                         b_steps: record.record.bsteps,
-                    })
-                    store.commit("updateRecordLoser", record.record.loser)
+                    });
+                    store.commit("updateRecordLoser", record.record.loser);
                     router.push({
                         name: "record_content",
                         params: {
@@ -161,7 +158,7 @@ export default {
             records,
             open_record_content,
             pages,
-            click_page,
+            click_page
         }
     }
 }

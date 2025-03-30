@@ -30,6 +30,7 @@ public class WebSocketServer {
     final public static ConcurrentHashMap<Integer, WebSocketServer> users = new ConcurrentHashMap<>();
     private User user;
     private Session session = null;
+
     public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     private static BotMapper botMapper;
@@ -143,6 +144,7 @@ public class WebSocketServer {
     }
 
     private void move(int direction) {
+        System.out.println("move " + direction);
         if (game.getPlayerA().getId().equals(user.getId())) {
             if (game.getPlayerA().getBotId().equals(-1))  // 亲自出马
                 game.setNextStepA(direction);

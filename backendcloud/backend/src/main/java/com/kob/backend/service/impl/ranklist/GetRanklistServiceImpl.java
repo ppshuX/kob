@@ -19,15 +19,15 @@ public class GetRanklistServiceImpl implements GetRanklistService {
 
     @Override
     public JSONObject getList(Integer page) {
-        IPage<User> userIPage = new Page<>(page, 3);
+        IPage<User> userIPage = new Page<>(page, 10);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("rating");
         List<User> users = userMapper.selectPage(userIPage, queryWrapper).getRecords();
         JSONObject resp = new JSONObject();
-        for (User user : users) user.setPassword("");
+        for (User user: users)
+            user.setPassword("");
         resp.put("users", users);
-        resp.put("users_count", userMapper.selectCount(queryWrapper));
-
+        resp.put("users_count", userMapper.selectCount(null));
         return resp;
     }
 }

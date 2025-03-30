@@ -1,8 +1,8 @@
 export default {
     state: {
         is_record: false,
-        a_step: "",
-        b_step: "",
+        a_steps: "",
+        b_steps: "",
         record_loser: "",
     },
     getters: {
