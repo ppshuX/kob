@@ -15,7 +15,7 @@ export default {
         const store = useStore();
 
         const click_go_back_handler = () => {
-            store.commit("updateRouterName", "menu")
+            store.commit("updateRouterName", "menu");
         }
 
         return {
@@ -30,21 +30,19 @@ div.content-field {
     width: 100%;
     height: 100%;
 }
-
 div.go-back {
-    position: absolute;
+    position:absolute;
     right: 5vh;
     bottom: 5vh;
     color: white;
     font-size: 24px;
     font-style: italic;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
     user-select: none;
 }
-
-div.go-back:hover{
-    scale: 1.1;
+div.go-back:hover {
+    transform: scale(1.2);
     transition: 200ms;
 }
 </style>
