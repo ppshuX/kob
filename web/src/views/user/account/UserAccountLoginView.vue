@@ -14,10 +14,19 @@
                     <div class="error-message">{{ error_message }}</div>
                     <button type="submit" class="btn btn-primary">提交</button>
                 </form>
-                <div style="text-align: center; margin-top: 20px; cursor: pointer;" @click="acwing_login">
-                    <img width="30" src="https://cdn.acwing.com/media/article/image/2022/09/06/1_32f001fd2d-acwing_logo.png" alt="logo">
-                    <br>
-                    AcWing一键登录
+
+                <!-- ✅ 让图标并列，文字在图标下方 -->
+                <div class="d-flex justify-content-center mt-3">
+                    <div class="d-flex flex-column align-items-center mx-3" @click="acwing_login">
+                        <img width="30" style="cursor: pointer;" 
+                            src="https://cdn.acwing.com/media/article/image/2022/09/06/1_32f001fd2d-acwing_logo.png" alt="AcWing">
+                        <span>AcWing 一键登录</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center mx-3" @click="qq_login">
+                        <img height="30" style="cursor: pointer;" 
+                            src="https://i.postimg.cc/Z5Ssr7KR/03-qq-symbol.jpg" alt="QQ">
+                        <span>QQ 一键登录</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,12 +96,25 @@ export default {
             })
         }
 
+        const qq_login = () => {
+            $.ajax({
+                url: "https://app7426.acapp.acwing.com.cn/api/user/account/qq/apply_code/",
+                type: "GET",
+                success: resp => {
+                    if (resp.result === "success") {
+                        window.location.replace(resp.apply_code_url);
+                    }
+                }
+            })
+        }
+
         return {
             username,
             password,
             error_message,
             login,
             acwing_login,
+            qq_login,
         }
     }
 }

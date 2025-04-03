@@ -110,6 +110,7 @@ public class AcAppServiceImpl implements AcAppService {
                 null,
                 photo,
                 1500,
+                null,
                 openid
         );
         userMapper.insert(user);
